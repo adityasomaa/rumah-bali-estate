@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   TOKEN. Semua warna dicek otomatis oleh `npm run contrast` (WCAG AA 4.5:1).
+   Aksen hijau diturunkan dari ikon rumah pada logo Rumah Bali Estate.
+   ========================================================================== */
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f2f5f1;
+  --color-surface: #fbfcfa;
+  --color-ink: #121a15;
+  --color-ink-soft: #435048;
+  --color-line: #d6ddd7;
+  --color-line-strong: #76827b;
+  --color-accent: #17753a;
+  --color-accent-strong: #0f5b2c;
+  --color-accent-tint: #e2efe5;
+  --color-on-accent: #fbfcfa;
+  --color-danger: #b3261e;
+
+  --radius-control: 0.375rem;
+  --radius-panel: 0.625rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+  :root {
+    /* Skala layer. Satu-satunya tempat angka z-index boleh ditulis. */
+    --z-content: 1;
+    --z-dropdown: 10; /* masih lapisan konten, di bawah header */
+    --z-header: 100;
+    --z-fab: 200;
+    --z-menu: 300;
+    --z-modal: 400;
+    --z-cookie: 500;
+    --z-curtain: 600;
+    --z-skip: 700;
+
+    --header-h: 4rem;
+    --fab-size: 3.5rem;
+    --cookie-h: 0px;
+  }
+
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--color-line-strong) var(--color-paper);
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-accent);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-soft);
+    opacity: 1;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Tipografi heading. Batas baris per viewport (mobile 3, tablet 2, desktop 1)
+     dicek oleh scripts/audit-overflow.mjs. */
+  .type-display {
+    font-size: 2rem;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .type-headline {
+    font-size: 1.625rem;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  .type-title {
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+  }
+  @media (min-width: 48rem) {
+    .type-display {
+      font-size: 2.5rem;
+    }
+    .type-headline {
+      font-size: 2rem;
+    }
+    .type-title {
+      font-size: 1.3125rem;
+    }
+  }
+  @media (min-width: 64rem) {
+    .type-display {
+      font-size: 2.875rem;
+    }
+    .type-headline {
+      font-size: 2.25rem;
+    }
+  }
+  @media (min-width: 80rem) {
+    .type-display {
+      font-size: 3.25rem;
+    }
+    .type-headline {
+      font-size: 2.5rem;
+    }
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Honeypot: disembunyikan dengan clip relatif ke form (form wajib `relative`). */
+  .hp-field {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Pola garis halus untuk wadah gambar sebelum termuat. Tanpa noise/grain. */
+  .media-frame {
+    background-color: var(--color-accent-tint);
+    background-image: linear-gradient(
+      135deg,
+      transparent 0 48%,
+      color-mix(in oklab, var(--color-accent) 10%, transparent) 48% 52%,
+      transparent 52% 100%
+    );
+    background-size: 1.5rem 1.5rem;
+  }
+
+  /* Loader pertama. Failsafe CSS: tetap hilang walau JavaScript gagal. */
+  .site-loader[data-state="initial"] {
+    animation: loader-failsafe 0s linear 4s forwards;
+  }
+  html[data-scroll-lock] {
+    overflow: hidden;
+  }
+  .loader-mark .mark-roof {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw-line 1.1s var(--ease-out-expo) 0.15s forwards;
+  }
+  .loader-mark .mark-wall {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw-line 0.9s var(--ease-out-expo) 0.55s forwards;
+  }
+  .loader-bar {
+    transform-origin: left center;
+    animation: loader-bar 1.4s var(--ease-in-out-quart) 0.2s forwards;
+    transform: scaleX(0);
+  }
+
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes loader-bar {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes loader-failsafe {
+    to {
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  /* Reveal saat scroll. Default terlihat; hanya disembunyikan oleh JS
+     untuk elemen yang memang berada di bawah layar. */
+  [data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s var(--ease-out-expo),
+      transform 0.9s var(--ease-out-expo);
+  }
+}
