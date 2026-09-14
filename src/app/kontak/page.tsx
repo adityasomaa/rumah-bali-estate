@@ -26,18 +26,16 @@ export default function KontakPage() {
   return (
     <>
       <Section labelledBy="kontak-title" className="pt-10 md:pt-16">
-        <Container className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-6">
-            <SectionHeader
-              as="h1"
-              id="kontak-title"
-              label="Kontak"
-              title="Hubungi Rumah Bali Estate"
-              description="Jadwalkan survei lokasi atau tanyakan KPR. Kedua form di halaman ini membuka WhatsApp dengan pesan yang sudah terisi."
-              cta={{ href: waLink("Halo Rumah Bali Estate, saya ingin bertanya."), label: "Chat WhatsApp", kind: "whatsapp" }}
-            />
-          </div>
-          <dl className="grid content-start rounded-panel border border-line bg-surface px-4 sm:px-6 lg:col-span-6">
+        <Container className="grid gap-10">
+          <SectionHeader
+            as="h1"
+            id="kontak-title"
+            label="Kontak"
+            title="Hubungi Rumah Bali Estate"
+            description="Jadwalkan survei lokasi atau tanyakan KPR. Kedua form di halaman ini membuka WhatsApp dengan pesan yang sudah terisi."
+            cta={{ href: waLink("Halo Rumah Bali Estate, saya ingin bertanya."), label: "Chat WhatsApp", kind: "whatsapp" }}
+          />
+          <dl className="grid content-start gap-x-10 rounded-panel border border-line bg-surface px-4 sm:px-6 lg:grid-cols-2">
             {channels.map(({ icon: Icon, label, value, href, external }) => (
               <div key={label} className="grid min-h-16 grid-cols-[7rem_minmax(0,1fr)] items-center gap-4 border-b border-line py-2 last:border-b-0">
                 <dt className="flex items-center gap-2.5 text-sm font-semibold text-ink">

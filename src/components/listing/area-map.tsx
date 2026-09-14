@@ -39,8 +39,8 @@ export function AreaMap({ listing }: { listing: Listing }) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-12 md:items-center md:gap-8">
-      <div className="md:col-span-8">
+    <div className="grid gap-4 lg:grid-cols-12 lg:items-center lg:gap-8">
+      <div className="lg:col-span-8">
         <Media src="area-map" ratio="16/9" sizes="(min-width: 48rem) 66vw, 100vw" alt={`Peta ilustratif area ${listing.area.district}, ${listing.area.subdistrict}`} />
       </div>
       <div className="grid content-start justify-items-start gap-3 md:col-span-4">
