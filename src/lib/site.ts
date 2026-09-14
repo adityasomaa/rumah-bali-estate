@@ -1,7 +1,9 @@
 // Satu sumber untuk identitas situs dan kontak. Semua angka/teks di sini
 // berasal dari halaman Facebook, Instagram, dan TikTok Rumah Bali Estate.
 
-export const SITE_URL = "https://rumah-bali-estate.vercel.app";
+// rumah-bali-estate.vercel.app sudah dipakai project lain (409), jadi alias
+// terdekat yang kosong diklaim: rumahbaliestate.vercel.app.
+export const SITE_URL = "https://rumahbaliestate.vercel.app";
 
 export const site = {
   name: "Rumah Bali Estate",

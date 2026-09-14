@@ -2,7 +2,7 @@
 
 Situs untuk Rumah Bali Estate, Denpasar. Listing aktif: rumah inden di Sesetan, Denpasar Selatan, Tipe 60/60 dan Tipe 60/80.
 
-- Production: https://rumah-bali-estate.vercel.app
+- Production: https://rumahbaliestate.vercel.app
 - Subdomain: https://rumah-bali-estate.onyxcreative.asia
 
 Dibangun dari nol untuk klien ini. Tidak ada kode yang disalin dari proyek klien lain.
@@ -301,6 +301,6 @@ Pengaturan bisa dibuka lagi dari footer atau halaman Kebijakan Privasi.
 
 - GitHub: `adityasomaa/rumah-bali-estate`
 - Vercel project `rumah-bali-estate` di team Onyx Creative Asia. Deployment Protection (Vercel Authentication) dimatikan.
-- Alias production diklaim eksplisit: `rumah-bali-estate.vercel.app`.
+- Alias production diklaim eksplisit sebagai project domain. `rumah-bali-estate.vercel.app` ditolak dengan error 409 karena sudah dipakai project lain, jadi diambil nama terdekat yang kosong: `rumahbaliestate.vercel.app`. Nama cadangan acak dari Vercel tidak dipakai.
 - Subdomain: CNAME `rumah-bali-estate` di DNS onyxcreative.asia (hPanel Hostinger) menuju Vercel.
 - Canonical, sitemap, dan robots memakai `SITE_URL` di `src/lib/site.ts`.
