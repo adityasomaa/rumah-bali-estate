@@ -32,7 +32,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${listing.title}, Tipe ${typeNames}`,
     description: `${listing.summary} Harga ${listing.types.map((t) => `${t.name} ${formatRupiahShort(t.price)}`).join(", ")}. Info detail dan KPR lewat WhatsApp.`,
     alternates: { canonical: `/listing/${listing.slug}` },
-    openGraph: { title: listing.title, url: `/listing/${listing.slug}` },
+    openGraph: {
+      title: listing.title,
+      url: `/listing/${listing.slug}`,
+      // Objek openGraph halaman menimpa warisan, jadi gambar ditulis eksplisit.
+      images: [{ url: "/og.png", width: 1200, height: 675, alt: "Rumah Bali Estate, Solusi Rumah Idaman Anda" }],
+    },
   };
 }
 

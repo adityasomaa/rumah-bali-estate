@@ -39,14 +39,10 @@ export const metadata: Metadata = {
     "Rumah Bali Estate, Denpasar. Informasi rumah dijual dan rumah inden, simulasi KPR, serta jadwal survei lokasi lewat WhatsApp.",
   applicationName: site.name,
   alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "id_ID",
-    siteName: site.name,
-    url: SITE_URL,
-    images: [{ url: "/og.png", width: 1200, height: 675, alt: "Rumah Bali Estate, Solusi Rumah Idaman Anda" }],
-  },
-  twitter: { card: "summary_large_image", images: ["/og.png"] },
+  // Gambar OG/Twitter memakai konvensi file (src/app/opengraph-image.png, 1200x675)
+  // agar tetap terwariskan walau halaman menimpa objek openGraph.
+  openGraph: { type: "website", locale: "id_ID", siteName: site.name },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   formatDetection: { telephone: false, email: false, address: false },
 };

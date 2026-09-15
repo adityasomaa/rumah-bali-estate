@@ -2,7 +2,7 @@
 // Rumah Bali Estate. Dirender dengan Playwright memakai font self-host proyek.
 // Jalankan: node scripts/generate-brand.mjs (setelah npm run art)
 import { chromium } from "playwright";
-import { readFileSync } from "node:fs";
+import { copyFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
@@ -41,6 +41,9 @@ const page = await browser.newPage({ viewport: { width: 1200, height: 675 } });
 await page.setContent(og, { waitUntil: "load" });
 await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: fileURLToPath(new URL("public/og.png", root)) });
+// Konvensi file Next.js: diwariskan ke semua route.
+copyFileSync(new URL("public/og.png", root), new URL("src/app/opengraph-image.png", root));
+copyFileSync(new URL("public/og.png", root), new URL("src/app/twitter-image.png", root));
 
 await page.setViewportSize({ width: 512, height: 512 });
 await page.setContent(logo, { waitUntil: "load" });
