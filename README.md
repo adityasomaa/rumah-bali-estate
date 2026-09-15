@@ -304,3 +304,34 @@ Pengaturan bisa dibuka lagi dari footer atau halaman Kebijakan Privasi.
 - Alias production `rumah-bali-estate.vercel.app` terdaftar sebagai project domain, bukan hanya alias otomatis `-onyx-creative-asia`. Permintaan klaim eksplisit mengembalikan 409 karena Vercel sudah memasangnya ke project ini saat deploy produksi pertama. Hal ini dikonfirmasi lewat daftar domain project dan respons HTTP 200 dari situs ini. Alias `rumahbaliestate.vercel.app` yang sempat ditambahkan sebagai cadangan sudah dihapus.
 - Subdomain: CNAME `rumah-bali-estate` di DNS onyxcreative.asia (hPanel Hostinger) menuju Vercel.
 - Canonical, sitemap, dan robots memakai `SITE_URL` di `src/lib/site.ts`.
+
+---
+
+## 14. Hasil verifikasi di production
+
+Dijalankan terhadap https://rumah-bali-estate.vercel.app setelah deploy terakhir.
+
+**`node scripts/audit-overflow.mjs https://rumah-bali-estate.vercel.app`**: nol masalah di 21 kombinasi (7 route × 375/768/1440).
+
+- Semua route 200, nol gambar rusak, nol request gagal, nol error konsol.
+- Nol overflow horizontal di tiga breakpoint.
+- Heading: maksimal 3 baris di mobile, 2 di tablet, 1 di desktop.
+- Reveal tidak ada yang berada di dalam induk overflow-hidden, dan tidak ada yang tertinggal pending.
+- Tombol WhatsApp melayang tidak menutupi tombol terakhir di mobile.
+- Hamburger membuka menu, link menavigasi, dan menu tertutup setelah pindah halaman.
+
+**`node scripts/verify-production.mjs https://rumah-bali-estate.vercel.app`**: 47 dari 47 lolos, antara lain:
+
+- robots dan sitemap memuat semua halaman publik dengan domain final. OG image, icon, dan logo 200. Route tak dikenal 404.
+- JSON-LD Organization dan RealEstateListing dengan `datePosted` 2026-09-08 serta harga 1.299.000.000 dan 1.479.000.000 IDR.
+- 12 field spesifikasi kosong (6 × 2 tipe) tampil "Tanyakan via WhatsApp" dengan teks screen reader "… belum dicantumkan", tidak ada yang tampil 0 atau strip.
+- Selisih +Rp 180 juta, kalimat ringkas memakai `aria-live`, dan tombol tukar membalik arah.
+- KPR: tanpa angka default, bunga kosong tidak menghasilkan angka, contoh README menghasilkan **Rp 9.633.512**, tenor di atas 30 dan persen di atas 100 ditolak, hasil diumumkan lewat `aria-live`.
+- Listbox: Enter memilih dan fokus kembali ke trigger.
+- Form survei: submit kosong memunculkan error, tanggal lampau ditolak, dan pesan dengan `&`, `#`, `%`, baris baru, serta emoji ZWJ 👨‍👩‍👧 sampai utuh di wa.me.
+- Form KPR: rupiah terformat `300.000.000` dan terkirim sebagai "Rp 300.000.000 (23,1% dari harga)". Penghasilan kosong tidak ikut terkirim.
+- CTA footer bertukar di `/kontak`. Kurtain kembali idle dan scroll berada di atas setelah transisi.
+
+**Selisih dari data (manual):** harga Tipe 60/80 diubah sementara menjadi 1.537.000.000 lalu di-build. Halaman langsung menampilkan "+Rp 238 juta" dan "lebih mahal Rp 238 juta". Harga kemudian dikembalikan ke 1.479.000.000.
+
+**Kontras:** `npm run contrast`, semua 17 pasangan lolos.
