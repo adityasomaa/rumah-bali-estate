@@ -1,7 +1,9 @@
 import { site } from "./site";
 
-// Karakter kontrol (kecuali baris baru), zero-width, dan pemisah baris Unicode.
-const UNSAFE_CHARS = new RegExp("[\\u0000-\\u0009\\u000B-\\u001F\\u007F\\u200B-\\u200F\\u2028\\u2029\\uFEFF]", "g");
+// Karakter kontrol (kecuali baris baru), zero-width space, tanda arah, dan pemisah
+// baris Unicode. ZWNJ/ZWJ (U+200C/U+200D) sengaja dipertahankan karena dipakai
+// emoji gabungan seperti 👨‍👩‍👧.
+const UNSAFE_CHARS = new RegExp("[\\u0000-\\u0009\\u000B-\\u001F\\u007F\\u200B\\u200E\\u200F\\u2028\\u2029\\uFEFF]", "g");
 
 /** Bersihkan teks bebas dari pengunjung sebelum masuk ke pesan WhatsApp. */
 export function cleanText(value: string, maxLength = 300) {

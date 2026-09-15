@@ -114,7 +114,7 @@ const form = page.locator('form[aria-label="Form jadwalkan survei lokasi"]');
 await form.locator("button[type=submit]").click();
 const errorsCount = await form.locator('[aria-invalid="true"]').count();
 check("survei: submit kosong memunculkan error", errorsCount >= 3, `${errorsCount}`);
-await form.locator('input[autocomplete="name"]').fill("Dewa Ayu & Putu #2");
+await form.locator('input[autocomplete="name"]').fill("Dewa Ayu Putu");
 await form.locator('button[aria-haspopup="listbox"]').first().click();
 await page.keyboard.press("Enter");
 await form.locator('input[type="date"]').fill("2026-01-01");
@@ -123,13 +123,14 @@ const pastErr = await form.getByText("Tanggal sudah lewat").count();
 check("survei: tanggal lampau ditolak", pastErr > 0);
 const future = new Date(Date.now() + 5 * 86400000).toISOString().slice(0, 10);
 await form.locator('input[type="date"]').fill(future);
-await form.locator("textarea").fill("Baris satu\nBaris dua & tiga #rumah 🏡");
+const note = "Baris satu\nBaris dua & tiga #rumah 🏡 👨‍👩‍👧 50%";
+await form.locator("textarea").fill(note);
 await form.locator("button[type=submit]").click();
 await page.waitForTimeout(300);
 const waUrl = await page.evaluate(() => window.__opened);
-const text = waUrl ? decodeURIComponent(new URL(waUrl).searchParams.get("text") ?? "") : "";
+const text = waUrl ? (new URL(waUrl).searchParams.get("text") ?? "") : "";
 check("survei: membuka wa.me/6283808999944", waUrl?.startsWith("https://wa.me/6283808999944?text="), waUrl?.slice(0, 60));
-check("survei: pesan utuh (& # baris baru emoji)", text.includes("Nama: Dewa Ayu & Putu #2") && text.includes("Baris satu\nBaris dua & tiga #rumah 🏡"), text);
+check("survei: pesan utuh (& # % baris baru emoji ZWJ)", text.includes("Nama: Dewa Ayu Putu") && text.includes(`Catatan: ${note}`), text);
 check("survei: raw URL tidak memuat & atau # mentah di teks", waUrl && !/[#]/.test(waUrl) && waUrl.split("?text=")[1].indexOf("&") === -1);
 
 // 6. Tanya KPR: rupiah terformat, angka mentah terkirim
@@ -143,7 +144,7 @@ const shown = await rupiah.inputValue();
 check("rupiah terformat ribuan", shown === "300.000.000", shown);
 await kpr.locator("button[type=submit]").click();
 await page.waitForTimeout(300);
-const kprText = decodeURIComponent(new URL(await page.evaluate(() => window.__opened)).searchParams.get("text") ?? "");
+const kprText = (new URL(await page.evaluate(() => window.__opened)).searchParams.get("text") ?? "");
 check("tanya KPR: DP terkirim Rp 300.000.000 (23,1%)", kprText.includes("Rencana DP: Rp 300.000.000 (23,1% dari harga)"), kprText);
 check("tanya KPR: penghasilan opsional tidak ikut bila kosong", !kprText.includes("Penghasilan"));
 
